@@ -1,0 +1,44 @@
+{
+  "name": "cpe_vote_backend",
+  "version": "1.0.0",
+  "description": "a web app for CPE election voting",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "start:prod": "SET NODE_ENV=production& nodemon server.js",
+    "debug": "ndb server.js",
+    "debug:prod": "SET NODE_ENV=production& ndb server.js"
+  },
+  "author": "GZM",
+  "license": "ISC",
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^5.13.15",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.0",
+    "nodemailer-sendgrid-transport": "^0.2.0",
+    "otp-generator": "^4.0.0",
+    "slugify": "^1.6.5",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.7",
+    "eslint": "^8.30.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.11",
+    "prettier": "^2.8.1"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  }
+}

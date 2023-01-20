@@ -1,0 +1,20 @@
+{
+	"short_name": "ACES 2023",
+	"name": "Aces Election Accreditations",
+	"icons": [
+		{
+			"src": "acesLogo_small.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "acesLogo_small.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"start_url": ".",
+	"display": "standalone",
+	"theme_color": "#000000",
+	"background_color": "#ffffff"
+}
