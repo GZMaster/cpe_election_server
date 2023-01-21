@@ -4,7 +4,7 @@
   "description": "a web app for CPE election voting",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "start:prod": "NODE_ENV=production node server.js",
     "build": "set NODE_ENV=production node server.js",
     "debug": "ndb server.js",

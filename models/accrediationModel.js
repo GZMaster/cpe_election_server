@@ -42,7 +42,6 @@ const accrediationSchema = new mongoose.Schema({
     type: String,
     // Set a minimum length for the password
     minlength: 8,
-    select: false,
   },
   // The password confirmation field
   passwordConfirm: {
@@ -55,6 +54,10 @@ const accrediationSchema = new mongoose.Schema({
       },
       message: "Passwords are not the same!",
     },
+  },
+  hasVoted: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -70,6 +73,27 @@ accrediationSchema.pre("save", async function (next) {
   // Call the next middleware function
   next();
 });
+
+accrediationSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+accrediationSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+
+    return JWTTimestamp < changedTimestamp;
+  }
+
+  // False means NOT changed
+  return false;
+};
 
 // Create a Mongoose model from the schema
 const voter = mongoose.model("voter", accrediationSchema);

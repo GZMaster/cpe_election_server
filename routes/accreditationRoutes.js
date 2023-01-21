@@ -13,5 +13,8 @@ router
 router
   .route("/verify")
   .post(adminController.protect, accreditationController.verifyEmail);
+router
+  .route("/getvote")
+  .post(adminController.protect, accreditationController.getAccrediation);
 
 module.exports = router;
