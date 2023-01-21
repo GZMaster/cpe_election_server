@@ -74,6 +74,10 @@ accrediationSchema.pre("save", async function (next) {
   next();
 });
 
+accrediationSchema.methods.passwordDecryption = async function (password) {
+  return await bcrypt.decodeBase64(password);
+};
+
 accrediationSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword

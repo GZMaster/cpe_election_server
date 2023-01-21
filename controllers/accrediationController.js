@@ -1,5 +1,3 @@
-const { promisify } = require("util");
-const jwt = require("jsonwebtoken");
 const voter = require("../models/accrediationModel");
 const { generateOTP } = require("../utils/otpGenerator");
 const generatePassword = require("../utils/generatePassword");
@@ -53,7 +51,7 @@ exports.createAccrediation = catchAsync(async (req, res, next) => {
 });
 
 exports.getAccrediation = catchAsync(async (req, res, next) => {
-  const user = await voter.findOne({ email: req.body.email });
+  const user = await voter.findOne({ matno: req.body.matno });
 
   if (!user) {
     return next(new AppError("No voter found with that MatNo", 404));
@@ -65,20 +63,17 @@ exports.getAccrediation = catchAsync(async (req, res, next) => {
 
   if (
     !user ||
-    !(await user.correctPassworsd(req.body.password, user.password))
+    !(await user.correctPassword(req.body.password, user.password))
   ) {
     return next(new AppError("Incorrect password", 401));
   }
 
-  const decoded = await promisify(jwt.verify)(
-    user.password,
-    process.env.JWT_SECRET
-  );
+  const passwordDecrypted = user.passwordDecryption(user.password);
 
   res.status(200).json({
     status: "success",
     data: {
-      decoded,
+      password: passwordDecrypted,
     },
   });
 });

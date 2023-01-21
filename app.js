@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/v1/accreditation", cors(), accreditationRouter);
-app.use("/api/v1/voting", votingRouter);
+app.use("/api/v1/voting", cors(), votingRouter);
 
 app.all("*", (req, res, next) => {
   // const err = new Error(`Can't find ${req.originalUrl} on this server!`);
