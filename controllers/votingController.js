@@ -34,13 +34,8 @@ exports.candidate = catchAsync(async (req, res, next) => {
 });
 
 exports.submitVote = catchAsync(async (req, res, next) => {
-  const { matno } = req.body;
-  const user = await voter.findOne({ matno, isVerified: true });
-
-  const candidate = await Candidate.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  const user = await voter.findById(req.user.id);
+  const candidate = await Candidate.findById(req.params.id);
 
   if (!candidate) {
     return next(new AppError("No candidate found with that ID", 404));

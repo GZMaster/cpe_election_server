@@ -193,7 +193,7 @@ exports.createVoter = catchAsync(async (req, res, next) => {
   const { matno } = req.body;
   const otp = generateOTP();
 
-  await voter.create({
+  const newVoter = await voter.create({
     ...req.body,
     otp,
     password: createPassword,
@@ -203,6 +203,7 @@ exports.createVoter = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     data: {
+      id: newVoter._id,
       password: createPassword,
       otp: otp,
       matno: matno,
@@ -300,9 +301,15 @@ exports.verifyVoter = catchAsync(async (req, res, next) => {
 
 exports.unverifyVoter = catchAsync(async (req, res, next) => {
   const { matno } = req.body;
-  const user = await voter.findOne({
-    matno,
-  });
+  const newOtp = generateOTP();
+  const user = await voter.findOneAndUpdate(
+    {
+      matno,
+    },
+    {
+      otp: newOtp,
+    }
+  );
 
   if (!user) {
     return next(new AppError("User not found", 404));
@@ -313,7 +320,8 @@ exports.unverifyVoter = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: {
-      user,
+      matno,
+      otp: newOtp,
     },
   });
 });
