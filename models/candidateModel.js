@@ -12,16 +12,6 @@ const candidateSchema = new mongoose.Schema({
     type: Number,
     required: [true, "A candidate must have a level"],
   },
-  matno: {
-    type: String,
-    required: [true, "A candidate must have a matric number"],
-    unique: true,
-    validator: {
-      validator: function (el) {
-        return el.match(/^ENG[0-9]{7}$/);
-      },
-    },
-  },
   picture: {
     type: String,
     required: [true, "A candidate must have a picture"],
@@ -43,7 +33,8 @@ const candidateSchema = new mongoose.Schema({
   },
   yearofelection: {
     type: Date,
-    required: [true, "A candidate must have a year of election"],
+    default: Date.now(),
+    select: false,
   },
 });
 
