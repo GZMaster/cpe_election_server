@@ -59,6 +59,11 @@ const accrediationSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  votedCandidates: {
+    type: Array,
+    ref: "Candidate",
+    default: "",
+  },
 });
 
 accrediationSchema.pre("save", async function (next) {

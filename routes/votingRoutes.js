@@ -8,10 +8,17 @@ router.post("/login", voterController.login);
 
 router
   .route("/")
-  .get(voterController.protect, votingController.getAllCandidates);
-router
-  .route("/:id")
-  .get(voterController.protect, votingController.candidate)
+  .get(voterController.protect, votingController.getAllCandidates)
   .patch(voterController.protect, votingController.submitVote);
+router
+  .route("/positions")
+  .get(voterController.protect, votingController.getPositions);
+router
+  .route("/votecomplete")
+  .patch(voterController.protect, votingController.VotedSuccessfully);
+
+router
+  .route("/image/:id")
+  .get(voterController.protect, votingController.getImage);
 
 module.exports = router;

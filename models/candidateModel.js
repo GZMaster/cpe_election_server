@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const path = require("path");
 // const bcrypt = require("bcryptjs");
 
 const candidateSchema = new mongoose.Schema({
@@ -12,9 +13,9 @@ const candidateSchema = new mongoose.Schema({
     type: Number,
     required: [true, "A candidate must have a level"],
   },
-  picture: {
+  imagePath: {
     type: String,
-    required: [true, "A candidate must have a picture"],
+    default: path.join("public", "images", `${this._id}.jpg`),
   },
   position: {
     type: String,
