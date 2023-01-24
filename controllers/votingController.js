@@ -1,3 +1,4 @@
+const path = require("path");
 const voter = require("../models/accrediationModel");
 const Candidate = require("../models/candidateModel");
 const APIFeatures = require("../utils/apiFeatures");
@@ -113,14 +114,7 @@ exports.getImage = catchAsync(async (req, res) => {
   // Send the image to the client using the res.sendFile() method
   // The first parameter is the path to the image file on the server
   // The second parameter is an optional options object
-  res.sendFile(candidate.imagePath, (err) => {
-    if (err) {
-      // Handle any errors that may occur while sending the file
-      console.error(err);
-      return res.status(500).send("Error while serving the image");
-    }
-  });
-
+  res.sendFile(candidate.imagePath, { root: path.join(__dirname, "../") });
   res.type("jpeg");
 
   res.set("Cache-Control", "public, max-age=31557600");

@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const path = require("path");
-// const bcrypt = require("bcryptjs");
 
 const candidateSchema = new mongoose.Schema({
   name: {
@@ -15,7 +13,6 @@ const candidateSchema = new mongoose.Schema({
   },
   imagePath: {
     type: String,
-    default: path.join("public", "images", `${this._id}.jpg`),
   },
   position: {
     type: String,
@@ -37,6 +34,11 @@ const candidateSchema = new mongoose.Schema({
     default: Date.now(),
     select: false,
   },
+});
+
+candidateSchema.pre("save", function (next) {
+  this.imagePath = `public/images/${this.name}.jpg`;
+  next();
 });
 
 const Candidate = mongoose.model("Candidate", candidateSchema);

@@ -17,8 +17,6 @@ router
   .route("/votecomplete")
   .patch(voterController.protect, votingController.VotedSuccessfully);
 
-router
-  .route("/image/:id")
-  .get(voterController.protect, votingController.getImage);
+router.route("/image/:id").get(votingController.getImage);
 
 module.exports = router;
