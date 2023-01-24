@@ -119,3 +119,20 @@ exports.getImage = catchAsync(async (req, res) => {
 
   res.set("Cache-Control", "public, max-age=31557600");
 });
+
+exports.getVoter = catchAsync(async (req, res, next) => {
+  const user = await voter.findById(req.user.id);
+
+  if (!user) {
+    return next(new AppError("User not found", 404));
+  }
+
+  console.log(user);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      user,
+    },
+  });
+});
