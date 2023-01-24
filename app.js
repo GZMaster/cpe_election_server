@@ -6,7 +6,7 @@ const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 const accreditationRouter = require("./routes/accreditationRoutes");
 const votingRouter = require("./routes/votingRoutes");
-const adminRouter = require("./routes/adminRoute");
+const superAdminRouter = require("./routes/superAdminRoutes");
 
 const app = express();
 
@@ -24,8 +24,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/v1/accreditation", cors(), accreditationRouter);
-app.use("/api/v1/voting", votingRouter);
-app.use("/api/v1/admin", cors(), adminRouter);
+app.use("/api/v1/voting", cors(), votingRouter);
+app.use("/api/v1/superadmin", cors(), superAdminRouter);
 
 app.all("*", (req, res, next) => {
   // const err = new Error(`Can't find ${req.originalUrl} on this server!`);

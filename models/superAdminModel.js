@@ -2,50 +2,28 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 
-const accrediationSchema = new mongoose.Schema({
+const superAdminSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please tell us your name!"],
-    unique: true,
-  },
-  level: {
-    type: Number,
-    required: [true, "An accrediation must have a level"],
-  },
-  matno: {
-    type: String,
-    required: [true, "An accrediation must have a matric number"],
-    unique: true,
-    validator: {
-      validator: function (el) {
-        return el.match(/^ENG[0-9]{7}$/);
-      },
-      message: "Please provide a valid matric number",
-    },
+    required: [true, "A user must have a name"],
   },
   email: {
     type: String,
-    // unique: true,
+    required: [true, "A user must have an email"],
+    unique: true,
     lowercase: true,
-    // Validate that the email is a valid format
     validate: [validator.isEmail, "Please provide a valid email"],
-  },
-  otp: {
-    type: String,
-    required: [true, "An accrediation must have an OTP"],
-  },
-  isVerified: {
-    type: Boolean,
-    default: false,
   },
   password: {
     type: String,
+    required: [true, "A user must have a password"],
     // Set a minimum length for the password
     minlength: 8,
+    select: false,
   },
-  // The password confirmation field
   passwordConfirm: {
     type: String,
+    required: [true, "A user must have a password confirmation"],
     // Validate that the password confirmation matches the password
     validate: {
       // This only works on CREATE and SAVE!!!
@@ -55,18 +33,11 @@ const accrediationSchema = new mongoose.Schema({
       message: "Passwords are not the same!",
     },
   },
-  hasVoted: {
-    type: Boolean,
-    default: false,
-  },
-  votedCandidates: {
-    type: Array,
-    ref: "Candidate",
-    default: "",
-  },
+  passwordChangedAt: Date,
 });
 
-accrediationSchema.pre("save", async function (next) {
+superAdminSchema.pre("save", async function (next) {
+  // If the password hasn't been modified, there's no need to hash it again
   if (!this.isModified("password")) return next();
 
   // Hash the password using bcrypt
@@ -79,18 +50,14 @@ accrediationSchema.pre("save", async function (next) {
   next();
 });
 
-accrediationSchema.methods.passwordDecryption = async function (password) {
-  return await bcrypt.decodeBase64(password);
-};
-
-accrediationSchema.methods.correctPassword = async function (
+superAdminSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-accrediationSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+superAdminSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,
@@ -105,7 +72,7 @@ accrediationSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
 };
 
 // Create a Mongoose model from the schema
-const voter = mongoose.model("voter", accrediationSchema);
+const superAdmin = mongoose.model("superAdmin", superAdminSchema);
 
 // Export the model for use in other parts of the application
-module.exports = voter;
+module.exports = superAdmin;
