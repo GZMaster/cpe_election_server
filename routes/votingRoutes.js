@@ -18,6 +18,10 @@ router
   .patch(voterController.protect, votingController.VotedSuccessfully);
 router.route("/voter").get(voterController.protect, votingController.getVoter);
 
+router
+  .route("/getposition")
+  .get(voterController.protect, votingController.getPosition);
+
 router.route("/image/:id").get(votingController.getImage);
 
 module.exports = router;

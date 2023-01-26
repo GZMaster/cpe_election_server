@@ -43,7 +43,7 @@ exports.candidate = catchAsync(async (req, res, next) => {
 
 exports.submitVote = catchAsync(async (req, res, next) => {
   const user = await voter.findById(req.user.id);
-  const { vote } = req.body;
+  const { vote, position } = req.body;
 
   if (!vote) {
     return next(new AppError("No vote found in the request body", 400));
@@ -68,6 +68,8 @@ exports.submitVote = catchAsync(async (req, res, next) => {
   await incrementVotes(vote);
 
   user.votedCandidates.push(vote);
+
+  user.votedPositions.push(position);
 
   await user.save();
 
@@ -127,12 +129,39 @@ exports.getVoter = catchAsync(async (req, res, next) => {
     return next(new AppError("User not found", 404));
   }
 
-  console.log(user);
-
   res.status(200).json({
     status: "success",
     data: {
       user,
+    },
+  });
+});
+
+exports.getPosition = catchAsync(async (req, res, next) => {
+  const user = await voter.findById(req.user.id);
+
+  const { position } = req.body;
+
+  if (!position) {
+    return next(new AppError("No position found in the request body", 400));
+  }
+
+  if (!user) {
+    return next(new AppError("User not found", 404));
+  }
+
+  if (user.hasVoted === true) {
+    return next(new AppError("You have already voted", 400));
+  }
+
+  if (user.votedCandidates.includes(position)) {
+    return next(new AppError("You have already voted for this candidate", 400));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      message: "You can vote for this position",
     },
   });
 });
