@@ -20,7 +20,7 @@ router.route("/voter").get(voterController.protect, votingController.getVoter);
 
 router
   .route("/getposition")
-  .get(voterController.protect, votingController.getPosition);
+  .post(voterController.protect, votingController.getPosition);
 
 router.route("/image/:id").get(votingController.getImage);
 
