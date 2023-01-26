@@ -62,7 +62,9 @@ const accrediationSchema = new mongoose.Schema({
   votedCandidates: {
     type: Array,
     ref: "Candidate",
-    default: "",
+  },
+  votedPositions: {
+    type: Array,
   },
 });
 
@@ -78,10 +80,6 @@ accrediationSchema.pre("save", async function (next) {
   // Call the next middleware function
   next();
 });
-
-accrediationSchema.methods.passwordDecryption = async function (password) {
-  return await bcrypt.decodeBase64(password);
-};
 
 accrediationSchema.methods.correctPassword = async function (
   candidatePassword,
