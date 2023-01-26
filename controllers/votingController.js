@@ -154,6 +154,10 @@ exports.getPosition = catchAsync(async (req, res, next) => {
     return next(new AppError("You have already voted", 400));
   }
 
+  if (req.body.position === null) {
+    return next(new AppError("No position found in the request body", 400));
+  }
+
   if (user.votedCandidates.includes(position)) {
     return next(new AppError("You have already voted for this candidate", 400));
   }
