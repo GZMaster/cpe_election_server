@@ -117,7 +117,7 @@ exports.getImage = catchAsync(async (req, res) => {
   // The first parameter is the path to the image file on the server
   // The second parameter is an optional options object
   res.sendFile(candidate.imagePath, { root: path.join(__dirname, "../") });
-  res.type("jpeg");
+  res.type("jpg");
 
   res.set("Cache-Control", "public, max-age=31557600");
 });
