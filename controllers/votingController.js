@@ -142,7 +142,7 @@ exports.getPosition = catchAsync(async (req, res, next) => {
 
   const { position } = req.body;
 
-  if (!position) {
+  if (!position || position === "") {
     return next(new AppError("No position found in the request body", 400));
   }
 
