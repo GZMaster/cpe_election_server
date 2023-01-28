@@ -158,6 +158,10 @@ exports.getPosition = catchAsync(async (req, res, next) => {
     return next(new AppError("You have already voted for this candidate", 400));
   }
 
+  if (user.votedPositions.includes(position)) {
+    return next(new AppError("You have already voted for this position", 400));
+  }
+
   res.status(200).json({
     status: "success",
     data: {
