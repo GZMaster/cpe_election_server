@@ -27,6 +27,10 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError("Incorrect matno or password", 401));
   }
 
+  if (loggedVoter.hasVoted === true) {
+    return next(new AppError("You have already voted", 405));
+  }
+
   // 3) If everything ok, send token to client
   const token = signToken(loggedVoter._id);
 
