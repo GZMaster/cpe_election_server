@@ -5,7 +5,7 @@ const adminController = require("../controllers/adminController");
 const router = express.Router();
 
 router.post("/login", adminController.login);
-router.post("/signup", adminController.signup);
+// router.post("/signup", adminController.signup);
 
 router
   .route("/")
